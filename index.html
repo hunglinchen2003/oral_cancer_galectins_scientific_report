@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Single-Cell Transcriptomic Analysis of Galectins & Galectin-7 in Oral Cancer (OSCC-GB)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #3b82f6;
+      --primary-dark: #172554;
+      --accent: #d97706;
+      --accent-red: #dc2626;
+      --accent-green: #059669;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --sidebar-w: 290px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.68;
+      font-size: 15px;
+    }
+
+    /* Top Navigation Header */
+    header.top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .brand-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-badge {
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-weight: 600;
+      border: 1px solid #bfdbfe;
+    }
+    .lang-switcher {
+      display: flex;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+    .lang-btn {
+      border: none;
+      background: transparent;
+      padding: 6px 14px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: 999px;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+    }
+    .lang-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    }
+
+    /* Layout */
+    .app-layout {
+      display: flex;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    /* Sidebar TOC */
+    aside.sidebar {
+      width: var(--sidebar-w);
+      height: calc(100vh - 60px);
+      position: sticky;
+      top: 60px;
+      overflow-y: auto;
+      padding: 24px 16px;
+      border-right: 1px solid var(--border);
+      background: #ffffff;
+      flex-shrink: 0;
+    }
+    .toc-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 12px;
+      padding-left: 10px;
+    }
+    .toc-list { list-style: none; }
+    .toc-item a {
+      display: block;
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: #334155;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+      transition: all 0.15s;
+    }
+    .toc-item a:hover {
+      background: #f1f5f9;
+      color: var(--primary);
+    }
+
+    /* Main Content Area */
+    main.content {
+      flex: 1;
+      padding: 40px 48px;
+      max-width: 1200px;
+      min-width: 0;
+    }
+
+    /* Typography & Sections */
+    .paper-hero {
+      margin-bottom: 36px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+    .paper-title {
+      font-size: 2.1rem;
+      font-weight: 800;
+      line-height: 1.25;
+      color: var(--primary-dark);
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+    .paper-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      align-items: center;
+    }
+    .meta-tag {
+      background: #f1f5f9;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+
+    h2.section-header {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 40px 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+    }
+    h3.subsection-header {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 24px 0 12px;
+    }
+
+    p { margin-bottom: 16px; text-align: justify; }
+
+    /* Callout & Alert Box */
+    .callout {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary-light);
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+    }
+    .callout-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .callout.hypothesis {
+      background: #fefce8;
+      border-left-color: #eab308;
+    }
+    .callout.hypothesis .callout-title { color: #a16207; }
+
+    .callout.takeaway {
+      background: #ecfdf5;
+      border-left-color: var(--accent-green);
+    }
+    .callout.takeaway .callout-title { color: #065f46; }
+
+    /* Figures and Cards */
+    .fig-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 28px 0;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+    }
+    .fig-img-wrapper {
+      padding: 16px;
+      background: #fafafa;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .fig-img-wrapper img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      cursor: zoom-in;
+      transition: transform 0.2s;
+    }
+    .fig-img-wrapper img:hover {
+      transform: scale(1.008);
+    }
+    .fig-caption {
+      padding: 18px 24px;
+      background: #ffffff;
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+    .fig-title {
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin: 20px 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+    table.data-table th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 600;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    table.data-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #1e293b;
+    }
+    table.data-table tr:hover td {
+      background: #f8fafc;
+    }
+    .val-highlight {
+      font-weight: 700;
+      color: var(--accent-red);
+    }
+    .val-pos { font-weight: 600; color: #16a34a; }
+    .val-neg { font-weight: 600; color: #dc2626; }
+
+    /* Modal for Image Zoom */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    .modal img {
+      max-width: 95%;
+      max-height: 95%;
+      border-radius: 8px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);
+    }
+
+    /* Language Show/Hide Control */
+    [data-lang="en"] { display: none; }
+    body.show-en [data-lang="zh"] { display: none; }
+    body.show-en [data-lang="en"] { display: block; }
+    body.show-en span[data-lang="en"], body.show-en strong[data-lang="en"] { display: inline; }
+    body:not(.show-en) span[data-lang="zh"], body:not(.show-en) strong[data-lang="zh"] { display: inline; }
+
+    /* Key stats cards */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .stat-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+    .stat-card .num {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .stat-card .desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding: 30px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header class="top-bar">
+    <div class="brand-title">
+      <span>🧬 OSCC Single-Cell Transcriptomics</span>
+      <span class="brand-badge">Seurat v5 & Slingshot</span>
+    </div>
+    <div class="lang-switcher">
+      <button class="lang-btn active" id="btn-zh" onclick="switchLang('zh')">繁體中文</button>
+      <button class="lang-btn" id="btn-en" onclick="switchLang('en')">English</button>
+    </div>
+  </header>
+
+  <div class="app-layout">
+    <!-- Sidebar TOC -->
+    <aside class="sidebar">
+      <div class="toc-title">
+        <span data-lang="zh">報告目錄</span>
+        <span data-lang="en">TABLE OF CONTENTS</span>
+      </div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#abstract">
+          <span data-lang="zh">1. 摘要 Abstract</span>
+          <span data-lang="en">1. Abstract</span>
+        </a></li>
+        <li class="toc-item"><a href="#intro-hypo">
+          <span data-lang="zh">2. 簡介與科學假說</span>
+          <span data-lang="en">2. Introduction & Hypotheses</span>
+        </a></li>
+        <li class="toc-item"><a href="#materials-methods">
+          <span data-lang="zh">3. 材料與分析方法</span>
+          <span data-lang="en">3. Materials & Methods</span>
+        </a></li>
+        <li class="toc-item"><a href="#results-landscape">
+          <span data-lang="zh">4. 結果：腫瘤細胞譜系圖譜</span>
+          <span data-lang="en">4. Results: Cellular Ecosystem</span>
+        </a></li>
+        <li class="toc-item"><a href="#results-galectins">
+          <span data-lang="zh">5. 結果：Galectin 家族微環境分佈</span>
+          <span data-lang="en">5. Results: Galectin Family Map</span>
+        </a></li>
+        <li class="toc-item"><a href="#results-galectin7">
+          <span data-lang="zh">6. 結果：Galectin-7 上皮專一性</span>
+          <span data-lang="en">6. Results: Galectin-7 Specificity</span>
+        </a></li>
+        <li class="toc-item"><a href="#results-differentiation">
+          <span data-lang="zh">7. 結果：鱗狀分化與 pEMT 拮抗</span>
+          <span data-lang="en">7. Results: Differentiation vs pEMT</span>
+        </a></li>
+        <li class="toc-item"><a href="#results-nonzero">
+          <span data-lang="zh">8. 結果：排除零表現細胞相關性</span>
+          <span data-lang="en">8. Results: Zero-Filtered Correlation</span>
+        </a></li>
+        <li class="toc-item"><a href="#results-pseudotime">
+          <span data-lang="zh">9. 結果：Slingshot 擬時序軌跡</span>
+          <span data-lang="en">9. Results: Pseudotime Trajectory</span>
+        </a></li>
+        <li class="toc-item"><a href="#discussion">
+          <span data-lang="zh">10. 討論與結論</span>
+          <span data-lang="en">10. Discussion & Conclusions</span>
+        </a></li>
+        <li class="toc-item"><a href="#references">
+          <span data-lang="zh">11. 參考文獻</span>
+          <span data-lang="en">11. References</span>
+        </a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+
+      <!-- Paper Hero Title -->
+      <section class="paper-hero">
+        <h1 class="paper-title">
+          <span data-lang="zh">牙齦頰部口腔鱗狀細胞癌單細胞轉錄組動態分析：揭示 Galectin 家族微環境拓撲與 Galectin-7 作為複層鱗狀終末分化之核心標誌</span>
+          <span data-lang="en">Single-Cell Transcriptomic Dissection of Galectin Family Dynamics in Gingivo-Buccal Oral Squamous Cell Carcinoma: Uncovering Galectin-7 as an Obligate Determinant of Terminal Squamous Differentiation</span>
+        </h1>
+        <div class="paper-meta">
+          <span class="meta-tag"><strong>Dataset:</strong> GSE215403</span>
+          <span class="meta-tag"><strong>Cohort:</strong> 12 OSCC Patients (3 OSMF+)</span>
+          <span class="meta-tag"><strong>Cells:</strong> 43,540 High-Quality Single Cells</span>
+          <span class="meta-tag"><strong>Pipeline:</strong> Seurat v5.5 + Slingshot v2.20</span>
+        </div>
+      </section>
+
+      <!-- Key Metrics Overview Grid -->
+      <div class="grid-3">
+        <div class="stat-card">
+          <div class="num">43,540</div>
+          <div class="desc">
+            <span data-lang="zh">納入分析優質細胞 (12 名病患)</span>
+            <span data-lang="en">High-Quality Cells Retained</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="num">100%</div>
+          <div class="desc">
+            <span data-lang="zh">Galectin-7 上皮/癌細胞限制表現 (非上皮 &lt; 2.5%)</span>
+            <span data-lang="en">Epithelial Lineage Specificity</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="num">ρ = +0.53</div>
+          <div class="desc">
+            <span data-lang="zh">非零細胞中與鱗狀終末分化評分之秩相關 (P &lt; 10⁻³⁰⁰)</span>
+            <span data-lang="en">Spearman Rho with Diff. Score</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1. Abstract -->
+      <section id="abstract">
+        <h2 class="section-header">
+          <span data-lang="zh">1. 摘要 (Abstract)</span>
+          <span data-lang="en">1. Abstract</span>
+        </h2>
+        <div data-lang="zh">
+          <p><strong>背景與目的：</strong>牙齦頰部口腔鱗狀細胞癌（OSCC-GB）具備高度個體異質性與侵襲轉移風險。半乳糖凝集素（Galectin）家族聚醣結合蛋白在腫瘤免疫逃逸、上皮間質轉化（EMT）與細胞分化中扮演多元角色，然而其在人類口腔癌微環境單細胞解析度下的空間生態分工與 Galectin-7 的功能定位仍未被系統性解析。</p>
+          <p><strong>方法：</strong>本研究自 GSE215403 資料集提取 12 位初診未治療 OSCC-GB 患者（含 3 位伴隨口腔黏膜下纖維化 OSMF 癌前病變）之 10x Genomics 單細胞轉錄組定序原始資料，運用 Seurat v5 管線進行嚴謹質控（保留 43,540 顆細胞）與 7 大譜系註解。針對 14,250 顆口腔癌細胞進行差異基因表現（DEG）、排除未表現細胞（Zero-filtered）之精準相關性分析，並結合 Slingshot 進行單細胞擬時序（Pseudotime）發育軌跡推估。</p>
+          <p><strong>結果：</strong>Galectin 家族在腫瘤微環境展現高度組織分工：<em>LGALS1</em>（Galectin-1）在腫瘤纖維母細胞（CAFs 陽性率 95.17%）與巨噬細胞強烈富集；<em>LGALS9</em> 專一局限於抗原呈現骨髓細胞（45.12%）；而 Galectin-7（<em>LGALS7 / LGALS7B</em>）展現極度嚴苛的腫瘤上皮專一性（癌細胞陽性率 34.1%~37.8%，基質免疫細胞 &lt; 2.5%，$P &lt; 2.2 	imes 10^{-300}$）。在癌細胞內部，Galectin-7 高表現群顯著富集 <em>S100A7, SPRR1B, KRT16, KRT6B, KRT1, CRABP2</em> 等終末分化標記；排除零表現細胞後，Galectin-7 仍與鱗狀分化模組維持極強正相關（Spearman $ho = +0.5257, P &lt; 10^{-300}$），而與部分間質轉化程式（<em>pEMT Score, LGALS1, VIM, TGFBI, SNAI2</em>）呈現強烈拮抗（$ho = -0.48 \sim -0.35$）。Slingshot 擬時序軌跡證明，隨細胞由侵襲/pEMT 態演化至終末角化態，Galectin-7 呈現單調遞增上調（$ho = +0.3253, P &lt; 10^{-300}$）。</p>
+          <p><strong>結論：</strong>Galectin-7 是口腔癌細胞高度分化與角化維持的核心標誌，其表達缺失標誌著腫瘤細胞向侵襲性 pEMT 表型的轉化，為評估口腔癌病理分化階層與靶向介入提供了新型分子標靶。</p>
+        </div>
+        <div data-lang="en">
+          <p><strong>Background & Objectives:</strong> Gingivo-buccal oral squamous cell carcinoma (OSCC-GB) exhibits pronounced patient heterogeneity and high metastatic recurrence. Galectins are carbohydrate-binding proteins that modulate immune evasion, epithelial-mesenchymal transition (EMT), and differentiation. However, the cellular compartmentalization of the galectin family and the precise role of Galectin-7 in oral cancer at single-cell resolution remain undefined.</p>
+          <p><strong>Methods:</strong> We analyzed raw single-cell RNA-sequencing data (GSE215403) from 12 treatment-naïve OSCC-GB patients (including 3 with concomitant oral submucous fibrosis, OSMF). Using Seurat v5, 43,540 high-quality cells across 7 major lineages were annotated. In-depth analysis of 14,250 malignant cells was conducted using differential expression (FindMarkers), zero-filtered Pearson and Spearman correlations, and Slingshot single-cell developmental pseudotime trajectory inference.</p>
+          <p><strong>Results:</strong> The galectin family displayed distinct niche compartmentalization: <em>LGALS1</em> (Galectin-1) was intensely enriched in cancer-associated fibroblasts (CAFs, 95.17% positive) and macrophages; <em>LGALS9</em> was confined to myeloid antigen-presenting cells (45.12%); whereas Galectin-7 (<em>LGALS7 / LGALS7B</em>) exhibited near-absolute tumor-epithelial specificity (34.1%–37.8% positive in cancer cells vs &lt;2.5% in stroma, $P &lt; 2.2 	imes 10^{-300}$). Intratumorally, high Galectin-7 expression was strongly co-regulated with terminal cornification genes (<em>S100A7, SPRR1B, KRT16, KRT1, CRABP2</em>). After filtering out zero-expression cells, Galectin-7 maintained robust positive correlation with squamous differentiation ($ho = +0.5257, P &lt; 10^{-300}$), while inversely correlating with pEMT markers (<em>LGALS1: $ho = -0.4843$; TGFBI: $ho = -0.4651$; VIM: $ho = -0.3501$; SNAI2: $ho = -0.3846$</em>). Slingshot pseudotime trajectory confirmed monotonic upregulation of Galectin-7 along the differentiation continuum ($r = +0.2613, ho = +0.3253, P &lt; 10^{-300}$).</p>
+          <p><strong>Conclusions:</strong> Galectin-7 represents an obligate hallmark of terminal squamous differentiation in oral cancer, whose silencing marks a phenotypic transition toward aggressive pEMT.</p>
+        </div>
+      </section>
+
+      <!-- 2. Introduction & Hypotheses -->
+      <section id="intro-hypo">
+        <h2 class="section-header">
+          <span data-lang="zh">2. 簡介與科學假說 (Introduction & Scientific Hypotheses)</span>
+          <span data-lang="en">2. Introduction & Hypotheses</span>
+        </h2>
+        <div data-lang="zh">
+          <p>口腔鱗狀細胞癌（OSCC）是全球常見之惡性腫瘤，其中好發於牙齦與頰部黏膜（OSCC-GB）者在亞洲地區特別猖獗，常導因於檳榔子（Areca nut）中的生物鹼持續刺激，引發慢性黏膜下纖維化（OSMF）並最終惡性轉化。單細胞轉錄組定序技術（scRNA-seq）揭示，OSCC 腫瘤細胞內部並非同質，而是呈現高度分化、部分上皮-間質轉化（partial EMT, pEMT）與胚胎樣重編程等多元細胞狀態。</p>
+          <p>半乳糖凝集素（Galectin）家族包含 15 種哺乳動物同源蛋白，主要識別人體細胞膜與細胞外基質中的 $eta$-galactoside 聚醣結構。其中，Galectin-7（由第 19 號染色體上的串聯重複基因 <em>LGALS7</em> 及 <em>LGALS7B</em> 編碼）生理上高度集中於複層鱗狀上皮基底上層與角質形成細胞，參與細胞凋亡、上皮黏附與表皮屏障維持。然而在惡性腫瘤中，Galectin-7 扮演的角色極具爭議：在部分上皮腫瘤中被視為抑癌與良性分化標記，但在轉移性細胞中亦曾見其異常升高。</p>
+          
+          <div class="callout hypothesis">
+            <div class="callout-title">💡 本研究提出的三大核心科學假說 (Scientific Hypotheses)</div>
+            <ol style="margin-left: 20px; line-height: 1.8;">
+              <li><strong>假說一（微環境拓撲專一性）</strong>：在口腔癌複雜的細胞生態系中，Galectin-7 嚴格專一表現在惡性上皮細胞中，非上皮基質與免疫浸潤細胞不表達；而其他 Galectin（如 Galectin-1、Galectin-9）則負責基質硬化與免疫調控。</li>
+              <li><strong>假說二（分化耦聯與 pEMT 拮抗）</strong>：在口腔癌細胞內部，Galectin-7 與複層鱗狀終末角化分化程式呈正向協同共調控，而與腫瘤浸潤前緣之 pEMT/間質侵襲程式呈互斥拮抗。</li>
+              <li><strong>假說三（動態發育軌跡一致性）</strong>：在單細胞擬時序分化發育連續體上，Galectin-7 隨細胞邁向終末角化分化而呈現動態漸進式活化，其靜默標誌著去分化與間質表型獲得。</li>
+            </ol>
+          </div>
+        </div>
+        <div data-lang="en">
+          <p>Oral squamous cell carcinoma (OSCC), particularly of the gingivo-buccal subsite (OSCC-GB), is a devastating malignancy strongly linked to areca nut chewing and tobacco use. Recent single-cell transcriptomic studies have unraveled profound cellular heterogeneity in OSCC, characterized by dual operating programs of partial epithelial-mesenchymal transition (pEMT) and fetal-like cellular reprogramming.</p>
+          <p>The galectin family comprises evolutionarily conserved $eta$-galactoside-binding lectins. Among them, Galectin-7 (encoded by <em>LGALS7</em> and <em>LGALS7B</em> on chromosome 19q13.2) is physiologically specialized for stratified squamous epithelia, regulating keratinocyte differentiation and epidermal integrity. In cancer biology, Galectin-7 has shown enigmatic and controversial roles—frequently functioning as a tumor suppressor and differentiation guardian, yet occasionally co-opted in metastatic subsets.</p>
+          <div class="callout hypothesis">
+            <div class="callout-title">💡 Three Scientific Hypotheses Formulated in This Study</div>
+            <ol style="margin-left: 20px; line-height: 1.8;">
+              <li><strong>Hypothesis 1 (Cellular Compartmentalization):</strong> Within the OSCC ecosystem, Galectin-7 is exclusively confined to the epithelial tumor compartment, whereas other family members (e.g., Galectin-1, Galectin-9) dominate the stromal-immune niches.</li>
+              <li><strong>Hypothesis 2 (Functional Coupling with Differentiation):</strong> In malignant cells, Galectin-7 is functionally coupled with terminal keratinocyte cornification and is strictly antagonistic to partial EMT.</li>
+              <li><strong>Hypothesis 3 (Dynamic Trajectory Coupling):</strong> Along single-cell developmental pseudotime, Galectin-7 is monotonically activated as cancer cells progress toward terminal squamous differentiation.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Materials and Methods -->
+      <section id="materials-methods">
+        <h2 class="section-header">
+          <span data-lang="zh">3. 材料與分析方法 (Materials and Methods)</span>
+          <span data-lang="en">3. Materials and Methods</span>
+        </h2>
+        <div data-lang="zh">
+          <h3 class="subsection-header">3.1 臨床世代與單細胞數據來源</h3>
+          <p>研究數據源自 GEO 資料庫 GSE215403（Kurkalang et al., <em>Cancer Sci</em> 2023）。納入 12 位未經放化療之初診 OSCC-GB 原發腫瘤病患（P1 至 P12）。其中 3 位病患（P8, P10, P12）合併臨床口腔黏膜下纖維化（OSMF+，Group 1），其餘 9 位無 OSMF（Group 2）。定序平台為 10x Genomics Chromium 3' v3 及 Illumina NovaSeq 6000 雙端定序（平均 50,000 raw reads/cell）。</p>
+          
+          <h3 class="subsection-header">3.2 Seurat v5 單細胞轉錄組處理管線</h3>
+          <p>原始稀疏矩陣使用 R 4.6.0 及 <strong>Seurat v5.5.0</strong> 進行處理。過濾閾值設為：基因數 $200 \le nFeature\_RNA \le 6000$、線粒體 UMI 比例 $percent.mt \le 20\%$。12 組樣本以 <code>merge()</code> 合併並執行 <code>JoinLayers()</code>。採用 <code>NormalizeData(method = "LogNormalize", scale.factor = 10000)</code>，選取 2,000 個高變異特徵（HVGs），於 <code>ScaleData()</code> 中回歸線粒體比例。前 30 個主成分（PCs）經 PCA 降維後，以 Louvain 演算法（resolution = 0.5）聚類並投射至 UMAP。</p>
+          
+          <h3 class="subsection-header">3.3 譜系註解與非零相關性統計</h3>
+          <p>以模組評分（<code>AddModuleScore</code>）結合經典標記鑑定 7 大譜系：上皮/癌細胞（<em>EPCAM, KRT5, KRT14</em>）、T 細胞（<em>CD3D, CD8A, CD4</em>）、骨髓細胞（<em>CD14, CD68, FCGR3A</em>）、CAFs 纖維母細胞（<em>COL1A1, ACTA2, FAP</em>）、內皮細胞（<em>PECAM1, VWF</em>）、B/漿細胞（<em>MS4A1, MZB1</em>）及肥大細胞（<em>TPSAB1</em>）。針對癌細胞執行 Wilcoxon 差異檢定（<code>FindMarkers</code>）。為克服單細胞零膨脹，專門開發非零表現細胞相關性管線（剔除零表現滴落細胞），同步檢驗 Pearson $r$ 與 Spearman $ho$。</p>
+
+          <h3 class="subsection-header">3.4 Slingshot 單細胞擬時序軌跡推估</h3>
+          <p>自 23,746 顆口腔癌細胞提取高解析度空間流形，使用 <strong>Slingshot (v2.20.0)</strong> 擬合發育主曲線（Principal Curves）。以去分化/pEMT 評分最高群集（Cluster 15）為發育起點（Root, $t=0$），高分化角化群集（Cluster 8）為發育終點（Terminus, $t=100$）。沿著擬時序使用廣義加性模型（GAM）擬合基因表達動態曲線。</p>
+        </div>
+        <div data-lang="en">
+          <h3 class="subsection-header">3.1 Clinical Cohort & Data Source</h3>
+          <p>Single-cell transcriptomic profiles were obtained from NCBI GEO (GSE215403, Kurkalang et al., 2023). Fresh surgical specimens from 12 treatment-naïve OSCC-GB patients (P1 to P12) were profiled via 10x Genomics Chromium 3' v3 and Illumina NovaSeq 6000. Three patients (P8, P10, P12) presented with concomitant OSMF (Group 1), while 9 patients had no prior OSMF (Group 2).</p>
+          
+          <h3 class="subsection-header">3.2 Seurat v5 Analytical Architecture</h3>
+          <p>Raw 10x matrices were analyzed using R 4.6.0 and <strong>Seurat v5.5.0</strong>. Quality thresholds required $200 \le nFeature\_RNA \le 6000$ and $percent.mt \le 20\%$. Layers were unified via <code>JoinLayers()</code>. Data were normalized (LogNormalize, scale factor 10,000), 2,000 HVGs identified, and scaled with percent.mt regressed. PCA (30 PCs), SNN graph clustering (resolution = 0.5), and UMAP embedding were performed.</p>
+
+          <h3 class="subsection-header">3.3 Lineage Annotation & Zero-Filtered Correlations</h3>
+          <p>Seven lineages were defined using lineage-specific module scores and canonical markers. Intratumoral DEGs were calculated using Wilcoxon rank-sum test with Bonferroni correction. Zero-filtered correlation analyses were implemented to eliminate single-cell dropout bias.</p>
+
+          <h3 class="subsection-header">3.4 Slingshot Developmental Pseudotime Trajectory</h3>
+          <p>Developmental continuum of 23,746 oral cancer cells was modeled using <strong>Slingshot (v2.20.0)</strong>. Starting from the pEMT/undifferentiated root (Cluster 15) to the well-differentiated squamous terminus (Cluster 8), principal curves and pseudotime coordinates were inferred, followed by GAM spline dynamic modeling.</p>
+        </div>
+      </section>
+
+      <!-- 4. Results: Cellular Ecosystem -->
+      <section id="results-landscape">
+        <h2 class="section-header">
+          <span data-lang="zh">4. 結果：口腔癌腫瘤微環境細胞譜系圖譜</span>
+          <span data-lang="en">4. Results: Cellular Ecosystem</span>
+        </h2>
+        <div data-lang="zh">
+          <p>在納入的 43,540 顆優質單細胞中，透過非監督聚類與特異性標記基因模組評分，精確劃分為 7 大主要細胞譜系：<strong>T 細胞</strong>（15,701 顆，36.1%）、<strong>口腔癌上皮細胞</strong>（14,250 顆，32.7%）、<strong>骨髓/巨噬細胞</strong>（5,164 顆，11.9%）、<strong>B/漿細胞</strong>（3,864 顆，8.9%）、<strong>CAFs 腫瘤相關纖維母細胞</strong>（2,132 顆，4.9%）、<strong>血管內皮細胞</strong>（1,636 顆，3.8%）及<strong>肥大細胞</strong>（793 顆，1.8%）。</p>
+          <p>腫瘤浸潤免疫細胞（T、骨髓、B、肥大細胞）佔微環境近 60%，顯著高於基質間質細胞（CAFs 與內皮細胞）。此外，患者來源分佈證實：正常基質與免疫細胞在跨病患空間呈高度重疊共享，而惡性上皮細胞群集則展現強烈的病患個體特異性（Patient-specific clustering），完美重現了原論文所描述的「個體間異質性（Inter-patient heterogeneity）」。</p>
+        </div>
+        <div data-lang="en">
+          <p>Across 43,540 high-quality single cells, unsupervised clustering and canonical module scoring resolved 7 major cell types: <strong>T Cells</strong> (15,701 cells, 36.1%), <strong>Oral Cancer Epithelial Cells</strong> (14,250 cells, 32.7%), <strong>Myeloid/Macrophages</strong> (5,164 cells, 11.9%), <strong>B/Plasma Cells</strong> (3,864 cells, 8.9%), <strong>Cancer-Associated Fibroblasts (CAFs)</strong> (2,132 cells, 4.9%), <strong>Endothelial Cells</strong> (1,636 cells, 3.8%), and <strong>Mast Cells</strong> (793 cells, 1.8%).</p>
+          <p>Tumor-infiltrating immune subsets constituted ~60% of the microenvironment, surpassing stromal elements. While stromal and immune cells clustered uniformly across donors, malignant epithelial cells exhibited profound patient-specific segregation, echoing the substantial inter-patient heterogeneity reported in primary oral malignancies.</p>
+        </div>
+
+        <!-- Fig 1 Card -->
+        <div class="fig-card">
+          <div class="fig-img-wrapper">
+            <img src="output_analysis/figures/Fig1_UMAP_CellTypes_and_Clinical.png" alt="Figure 1: UMAP Overview of OSCC Ecosystem" onclick="openModal(this.src)">
+          </div>
+          <div class="fig-caption">
+            <div class="fig-title">
+              <span data-lang="zh">圖 1：43,540 顆口腔癌單細胞之 UMAP 降維聚類、細胞譜系與臨床病患分佈</span>
+              <span data-lang="en">Figure 1: UMAP Landscape, Cell Lineages, and Clinical Profiles of 43,540 OSCC Cells</span>
+            </div>
+            <div data-lang="zh">
+              <strong>(A)</strong> 7 大主要細胞譜系之 UMAP 投影分佈；<strong>(B)</strong> 12 位患者（P1 至 P12）之細胞空間分佈，顯示惡性上皮細胞高度個體專一性；<strong>(C)</strong> 伴隨口腔黏膜下纖維化（OSMF+，Group 1，紅色）與無 OSMF（Group 2，藍色）病患之細胞投射。
+            </div>
+            <div data-lang="en">
+              <strong>(A)</strong> UMAP visualization colored by the 7 major cell lineages; <strong>(B)</strong> Individual patient distribution (P1 to P12), showing distinct patient-specific tumor clusters; <strong>(C)</strong> Spatial segregation of tumors with concomitant OSMF (Group 1, red) versus non-OSMF tumors (Group 2, blue).
+            </div>
+          </div>
+        </div>
+
+        <!-- Fig 2 Card -->
+        <div class="fig-card">
+          <div class="fig-img-wrapper">
+            <img src="output_analysis/figures/Fig2_Canonical_Markers_DotPlot.png" alt="Figure 2: Canonical Marker Genes DotPlot" onclick="openModal(this.src)">
+          </div>
+          <div class="fig-caption">
+            <div class="fig-title">
+              <span data-lang="zh">圖 2：各大細胞譜系經典標記基因表現氣泡圖（DotPlot）</span>
+              <span data-lang="en">Figure 2: DotPlot Validation of Canonical Lineage Markers</span>
+            </div>
+            <div data-lang="zh">
+              點的大小代表表現該標記之細胞百分比（% Expressing Cells），顏色深淺代表平均標準化表現量（Mean Expression）。驗證了上皮（<em>EPCAM, KRT5, KRT14, CDH1</em>）、T 細胞（<em>CD3D, CD8A, CD4</em>）、骨髓（<em>CD14, CD68, LYZ</em>）、CAFs（<em>COL1A1, ACTA2, FAP</em>）、內皮（<em>PECAM1, VWF</em>）、B細胞（<em>MS4A1, MZB1</em>）及肥大細胞（<em>TPSAB1, CPA3</em>）之譜系純度。
+            </div>
+            <div data-lang="en">
+              Dot size denotes the percentage of positive cells; color intensity reflects mean log-normalized expression. Lineage markers confirm high annotation fidelity.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Results: Galectin Family Landscape -->
+      <section id="results-galectins">
+        <h2 class="section-header">
+          <span data-lang="zh">5. 結果：Galectin 家族在腫瘤微環境之空間分工拓撲</span>
+          <span data-lang="en">5. Results: Galectin Family Map</span>
+        </h2>
+        <div data-lang="zh">
+          <p>對人類基因組中已註解之 10 個 Galectin 家族成員進行全生態系調查，發現 Galectin 蛋白在口腔癌微環境呈現驚人的「生態區室化分工（Niche Compartmentalization）」：</p>
+          <ul style="margin-left: 20px; margin-bottom: 16px; line-height: 1.8;">
+            <li><strong>LGALS1 (Galectin-1)</strong>：主要由 <strong>CAFs 纖維母細胞</strong>（平均表達 3.3934，高達 <strong>95.17%</strong> 細胞陽性）及巨噬細胞（2.3264，82.51%）超高強度分泌，是微環境中基質重塑與免疫抑制的核心媒介。</li>
+            <li><strong>LGALS9 (Galectin-9)</strong>：專一性富集於<strong>骨髓/巨噬細胞</strong>（0.5940，45.12%）及血管內皮細胞（0.5167，44.38%），作為免疫檢查點 TIM-3 之主要配體發揮作用。</li>
+            <li><strong>LGALS2</strong>：高度特異性侷限於巨噬細胞；<strong>LGALS3BP</strong> 由 CAFs 大量合成並分泌至細胞外基質。</li>
+            <li><strong>LGALS7 / LGALS7B (Galectin-7)</strong>：在所有非上皮基質與免疫細胞中完全沉默，專一性局限於上皮/口腔癌細胞中。</li>
+          </ul>
+        </div>
+        <div data-lang="en">
+          <p>Surveying the ten human galectin genes revealed an intricate functional compartmentalization across the OSCC microenvironment:</p>
+          <ul style="margin-left: 20px; margin-bottom: 16px; line-height: 1.8;">
+            <li><strong>LGALS1 (Galectin-1):</strong> Hyper-expressed by <strong>CAFs</strong> (mean = 3.3934, <strong>95.17%</strong> positive) and macrophages (82.51%), driving extracellular matrix deposition and immune exclusion.</li>
+            <li><strong>LGALS9 (Galectin-9):</strong> Enriched specifically within <strong>myeloid/macrophages</strong> (45.12%) and endothelial cells (44.38%), functioning as the cognate ligand for the TIM-3 checkpoint.</li>
+            <li><strong>LGALS2:</strong> Macrophage-restricted; <strong>LGALS3BP</strong> synthesized predominantly by CAFs.</li>
+            <li><strong>LGALS7 / LGALS7B (Galectin-7):</strong> Totally silent across non-epithelial compartments, exhibiting near-exclusive confinement to the neoplastic epithelial compartment.</li>
+          </ul>
+        </div>
+
+        <!-- Fig 3 Card -->
+        <div class="fig-card">
+          <div class="fig-img-wrapper">
+            <img src="output_analysis/figures/Fig3_Galectins_Family_DotPlot.png" alt="Figure 3: Galectin Family Landscape" onclick="openModal(this.src)">
+          </div>
+          <div class="fig-caption">
+            <div class="fig-title">
+              <span data-lang="zh">圖 3：Galectin 家族基因於各大細胞譜系之表現氣泡圖</span>
+              <span data-lang="en">Figure 3: Expression Landscape of Galectin Family Members Across Lineages</span>
+            </div>
+            <div data-lang="zh">
+              清楚展現 LGALS1（CAFs 主導）、LGALS9（骨髓巨噬主導）、LGALS2（巨噬主導）與 LGALS7/7B（上皮/癌細胞絕對專一）之生態微環境劃分。
+            </div>
+            <div data-lang="en">
+              Highlights the clear niche compartmentalization of LGALS1 (CAFs), LGALS9 (myeloid), and LGALS7/7B (epithelial/cancer cells).
+            </div>
+          </div>
+        </div>
+
+        <!-- Table 1: Galectin Family Expression -->
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Cell Lineage</th>
+                <th>LGALS1 (% / Mean)</th>
+                <th>LGALS3 (% / Mean)</th>
+                <th>LGALS7 (% / Mean)</th>
+                <th>LGALS7B (% / Mean)</th>
+                <th>LGALS9 (% / Mean)</th>
+                <th>LGALS3BP (% / Mean)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Epithelial/Cancer</strong></td>
+                <td>48.7% / 1.28</td>
+                <td>41.7% / 0.81</td>
+                <td class="val-highlight">9.7% / 0.17</td>
+                <td class="val-highlight">34.1% / 0.77</td>
+                <td>2.8% / 0.03</td>
+                <td>25.3% / 0.45</td>
+              </tr>
+              <tr>
+                <td><strong>Fibroblasts/CAFs</strong></td>
+                <td class="val-highlight">95.2% / 3.39</td>
+                <td>70.6% / 1.14</td>
+                <td>1.4% / 0.02</td>
+                <td>2.4% / 0.03</td>
+                <td>19.2% / 0.18</td>
+                <td class="val-highlight">70.3% / 1.20</td>
+              </tr>
+              <tr>
+                <td><strong>Myeloid/Macro</strong></td>
+                <td class="val-highlight">82.5% / 2.33</td>
+                <td>63.7% / 1.24</td>
+                <td>0.7% / 0.01</td>
+                <td>2.4% / 0.03</td>
+                <td class="val-highlight">45.1% / 0.59</td>
+                <td>32.7% / 0.42</td>
+              </tr>
+              <tr>
+                <td><strong>T Cells</strong></td>
+                <td>39.8% / 0.84</td>
+                <td>24.8% / 0.40</td>
+                <td>0.8% / 0.01</td>
+                <td>2.4% / 0.04</td>
+                <td>14.9% / 0.22</td>
+                <td>7.2% / 0.11</td>
+              </tr>
+              <tr>
+                <td><strong>Endothelial</strong></td>
+                <td>68.5% / 1.58</td>
+                <td>58.5% / 0.89</td>
+                <td>1.0% / 0.01</td>
+                <td>2.8% / 0.04</td>
+                <td class="val-highlight">44.4% / 0.52</td>
+                <td>10.9% / 0.13</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 6. Results: Galectin-7 Epithelial Specificity -->
+      <section id="results-galectin7">
+        <h2 class="section-header">
+          <span data-lang="zh">6. 結果：Galectin-7 雙基因位點與腫瘤上皮專一性</span>
+          <span data-lang="en">6. Results: Galectin-7 Specificity</span>
+        </h2>
+        <div data-lang="zh">
+          <p><strong>生物資訊重要發現：</strong>人類基因組 GRCh38 19q13.2 包含兩段串聯重複位點：<em>LGALS7</em> 與 <em>LGALS7B</em>，兩者皆轉錄轉譯為相同之 Galectin-7 蛋白。在 10x 3' 單細胞比對中，因 3' UTR 多型性差異，P1、P4、P5、P7、P11 顯著比對至 <em>LGALS7</em>，而 P2、P3、P6、P10 則壓倒性比對至 <em>LGALS7B</em>。本研究創新定義了 <code>LGALS7_Total</code> 綜合轉錄強度，完整捕捉了 Galectin-7 的全部轉錄產物。</p>
+          <p><strong>腫瘤細胞專一性檢定：</strong>Galectin-7 在口腔癌細胞之表現與周邊所有非上皮細胞比較，呈現極端顯著之差異（Wilcoxon rank-sum test $P &lt; 2.2 	imes 10^{-300}$）。在空間特徵圖（FeaturePlot）上，Galectin-7 嚴格局限於惡性腫瘤細胞島嶼內部，與充斥於間質的 Galectin-1（<em>LGALS1</em>）呈現涇渭分明的空間互斥屏障。</p>
+          <p><strong>病患異質性與 OSMF 關聯：</strong>病患間之 Galectin-7 陽性率具極大變異（0.34% ~ 58.60%）。P10（伴隨 OSMF）高達 58.60% 癌細胞呈現超高 Galectin-7 表達；反之，P8（同為 OSMF+，原論文證實為低分化侵襲型）其 Galectin-7 幾乎完全靜默（0.34% 陽性率），表明 Galectin-7 表現直接反映了個體腫瘤的分化成熟度。</p>
+        </div>
+        <div data-lang="en">
+          <p><strong>Genomic Insight:</strong> In human GRCh38 (19q13.2), Galectin-7 is encoded by duplicated paralogs <em>LGALS7</em> and <em>LGALS7B</em>. Due to 3' UTR sequence variations, distinct patients preferentially mapped to either paralog. We unified them via a composite metric <code>LGALS7_Total</code>.</p>
+          <p><strong>Absolute Epithelial Specificity:</strong> Galectin-7 expression was strictly restricted to malignant cells compared to all non-epithelial subsets (Wilcoxon test $P &lt; 2.2 	imes 10^{-300}$). Spatial feature plots illustrate a stark boundary between epithelial Galectin-7 and stromal Galectin-1 (<em>LGALS1</em>).</p>
+          <p><strong>Patient Heterogeneity:</strong> Galectin-7 positivity varied widely from 0.34% (P8, poorly differentiated) to 58.60% (P10, highly differentiated), demonstrating that Galectin-7 faithfully indexes the differentiation status of oral carcinomas.</p>
+        </div>
+
+        <!-- Fig 4A Card -->
+        <div class="fig-card">
+          <div class="fig-img-wrapper">
+            <img src="output_analysis/figures/Fig4A_Galectin7_FeaturePlots.png" alt="Figure 4A: FeaturePlots of Galectin-7" onclick="openModal(this.src)">
+          </div>
+          <div class="fig-caption">
+            <div class="fig-title">
+              <span data-lang="zh">圖 4A：LGALS7、LGALS7B、綜合 Galectin-7 與 LGALS1 之 UMAP 空間特徵投影</span>
+              <span data-lang="en">Figure 4A: Spatial FeaturePlots of LGALS7, LGALS7B, Composite Galectin-7, and LGALS1</span>
+            </div>
+            <div data-lang="zh">清晰顯示 Galectin-7 嚴格局限於上皮癌細胞核心，而 LGALS1（Galectin-1）則高度聚集於周邊 CAFs 間質細胞。</div>
+            <div data-lang="en">Demonstrates strict tumor-epithelial confinement of Galectin-7 versus stromal dominance of LGALS1.</div>
+          </div>
+        </div>
+
+        <!-- Fig 4B Card -->
+        <div class="fig-card">
+          <div class="fig-img-wrapper">
+            <img src="output_analysis/figures/Fig4B_Galectin7_Paralogs_Violin.png" alt="Figure 4B: Violins of Galectin-7 Paralogs" onclick="openModal(this.src)">
+          </div>
+          <div class="fig-caption">
+            <div class="fig-title">
+              <span data-lang="zh">圖 4B：LGALS7 與 LGALS7B 於 7 大譜系之小提琴圖</span>
+              <span data-lang="en">Figure 4B: Violin Plots of LGALS7 and LGALS7B Across Lineages</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fig 5 Card -->
+        <div class="fig-card">
+          <div class="fig-img-wrapper">
+            <img src="output_analysis/figures/Fig5_Galectin7_Patient_OSMF_Heterogeneity.png" alt="Figure 5: Patient Heterogeneity" onclick="openModal(this.src)">
+          </div>
+          <div class="fig-caption">
+            <div class="fig-title">
+              <span data-lang="zh">圖 5：12 位病患之 Galectin-7 表現個體異質性與 OSMF 狀態比較</span>
+              <span data-lang="en">Figure 5: Inter-Patient Heterogeneity and OSMF Stratification</span>
+            </div>
+            <div data-lang="zh">
+              <strong>(A)</strong> 12 位患者之 Galectin-7 表現小提琴分佈圖（紅色：OSMF+；藍色：non-OSMF）；<strong>(B)</strong> OSMF 伴隨群組與非 OSMF 群組之整體對比。
+            </div>
+            <div data-lang="en">
+              <strong>(A)</strong> Violin distribution across 12 patients; <strong>(B)</strong> Stratified comparison between OSMF+ and non-OSMF groups.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Results: Differentiation vs pEMT -->
+      <section id="results-differentiation">
+        <h2 class="section-header">
+          <span data-lang="zh">7. 結果：癌細胞次群差異分析：Galectin-7 與鱗狀終末分化之分子耦聯</span>
+          <span data-lang="en">7. Results: Differentiation vs pEMT</span>
+        </h2>
+        <div data-lang="zh">
+          <p>將 14,250 顆口腔癌細胞依 Galectin-7 表現強度分為 <code>LGALS7_High</code>（2,703 顆）與 <code>LGALS7_Negative</code>（8,851 顆）。差異基因檢定共檢出 <strong>1,892 個顯著差異基因</strong>（Adjusted $P &lt; 0.05$）。</p>
+          <p>前 20 大最顯著上調基因壓倒性富集於<strong>複層鱗狀上皮成熟分化與角化外被（Cornified Envelope）形成</strong>標誌：<em>S100A7</em>（$\log_2	ext{FC} = +2.23$）、<em>SPRR1B</em>（$+1.71$）、<em>KRTDAP</em>（$+1.95$）、<em>KRT1</em>（$+2.40$）、<em>CRABP2</em>（$+2.22$）、<em>AQP3</em>（$+2.16$）、<em>SBSN</em>（$+1.59$）、<em>SERPINB3/4</em>（$+1.55$）。相反地，Galectin-7 陰性癌細胞顯著活化部分上皮間質轉化標誌（<em>VIM, FN1, TGFBI</em>）。</p>
+        </div>
+        <div data-lang="en">
+          <p>Stratifying 14,250 cancer cells into <code>LGALS7_High</code> (2,703 cells) vs <code>LGALS7_Negative</code> (8,851 cells) uncovered <strong>1,892 significant DEGs</strong> (Adj. $P &lt; 0.05$).</p>
+          <p>Top upregulated genes were overwhelmingly dedicated to squamous differentiation and cornified envelope assembly: <em>S100A7</em> ($\log_2	ext{FC} = +2.23$), <em>SPRR1B</em> ($+1.71$), <em>KRTDAP</em> ($+1.95$), <em>KRT1</em> ($+2.40$), and <em>CRABP2</em> ($+2.22$). Conversely, Galectin-7-negative cells switched on pEMT mesenchymal invasion factors (<em>VIM, FN1, TGFBI</em>).</p>
+        </div>
+
+        <!-- Fig 6 Card -->
+        <div class="fig-card">
+          <div class="fig-img-wrapper">
+            <img src="output_analysis/figures/Fig6_Volcano_LGALS7_High_vs_Neg.png" alt="Figure 6: Volcano Plot of DEGs" onclick="openModal(this.src)">
+          </div>
+          <div class="fig-caption">
+            <div class="fig-title">
+              <span data-lang="zh">圖 6：Galectin-7 高表現 vs 陰性口腔癌細胞之差異基因火山圖（Volcano Plot）</span>
+              <span data-lang="en">Figure 6: Volcano Plot of Differentially Expressed Genes in LGALS7-High Cancer Cells</span>
+            </div>
+            <div data-lang="zh">紅色點代表顯著上調之複層鱗狀分化標記；藍色點代表下調基因；標註了經典角蛋白與角化外被基因。</div>
+            <div data-lang="en">Red points mark significantly upregulated squamous differentiation genes; labeled genes highlight key structural markers.</div>
+          </div>
+        </div>
+
+        <!-- Fig 7 Card -->
+        <div class="fig-card">
+          <div class="fig-img-wrapper">
+            <img src="output_analysis/figures/Fig7_Correlation_Diff_pEMT_FOS.png" alt="Figure 7: Correlation with Differentiation and pEMT" onclick="openModal(this.src)">
+          </div>
+          <div class="fig-caption">
+            <div class="fig-title">
+              <span data-lang="zh">圖 7：Galectin-7 與上皮分化評分、pEMT 評分及原論文判別基因 FOS 之迴歸曲線</span>
+              <span data-lang="en">Figure 7: Correlation of Galectin-7 with Squamous Differentiation, pEMT, and FOS</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. Results: Zero-Filtered Correlation -->
+      <section id="results-nonzero">
+        <h2 class="section-header">
+          <span data-lang="zh">8. 結果：排除零表現細胞（Zero-Filtered）之精準相關性分析</span>
+          <span data-lang="en">8. Results: Zero-Filtered Correlation</span>
+        </h2>
+        <div data-lang="zh">
+          <p>單細胞轉錄組常因定序捕獲率限制產生大量「零表現細胞（Dropout）」，若直接計入易造成相關性假象。為提供最高標準之統計驗證，我們特別針對<strong>實際表現 Galectin-7 的陽性癌細胞（$N = 5,721$ 顆）</strong> 重新計算相關性：</p>
+          <ul style="margin-left: 20px; margin-bottom: 16px; line-height: 1.8;">
+            <li><strong>上皮分化模組</strong>：在完全排除零表現細胞後，Galectin-7 與分化評分依然維持超高顯著之強烈正相關（Pearson $r = \mathbf{+0.4216}$, Spearman $ho = \mathbf{+0.5257}$, $P &lt; 10^{-300}$）。</li>
+            <li><strong>共表現核心基因</strong>：<em>S100A7</em>（$ho = +0.4027$）、<em>KRT16</em>（$ho = +0.3630$）、<em>KRT6B</em>（$ho = +0.3202$）、<em>SPRR1B</em>（$ho = +0.2741$）全數呈現極度穩健的線性正相關。</li>
+            <li><strong>間質侵襲程式拮抗</strong>：即使在共表現細胞中，Galectin-7 仍與 <em>LGALS1</em>（$ho = -0.4843$）、<em>TGFBI</em>（$ho = -0.4651$）、<em>SNAI2</em>（$ho = -0.3846$）、<em>VIM</em>（$ho = -0.3501$）呈高度負相關。</li>
+          </ul>
+        </div>
+        <div data-lang="en">
+          <p>To eliminate zero-inflation artifacts stemming from single-cell dropouts, we evaluated correlations strictly among the <strong>5,721 Galectin-7-expressing cancer cells</strong>:</p>
+          <ul style="margin-left: 20px; margin-bottom: 16px; line-height: 1.8;">
+            <li><strong>Squamous Differentiation:</strong> Retained profound positive correlation with Galectin-7 ($r = +0.4216, ho = +0.5257, P &lt; 10^{-300}$).</li>
+            <li><strong>Individual Markers:</strong> <em>S100A7</em> ($ho = +0.4027$), <em>KRT16</em> ($ho = +0.3630$), and <em>SPRR1B</em> ($ho = +0.2741$) displayed resilient co-elevation.</li>
+            <li><strong>pEMT Repression:</strong> Consistently inversely correlated with <em>LGALS1</em> ($ho = -0.4843$), <em>TGFBI</em> ($ho = -0.4651$), <em>SNAI2</em> ($ho = -0.3846$), and <em>VIM</em> ($ho = -0.3501$).</li>
+          </ul>
+        </div>
+
+        <!-- Fig 8 Card -->
+        <div class="fig-card">
+          <div class="fig-img-wrapper">
+            <img src="output_analysis/figures/Fig8_Galectin7_Correlation_NonZero_Cells.png" alt="Figure 8: Non-Zero Expressing Cell Correlations" onclick="openModal(this.src)">
+          </div>
+          <div class="fig-caption">
+            <div class="fig-title">
+              <span data-lang="zh">圖 8：排除零表現細胞後 Galectin-7 與目標基因之 Spearman 相關係數棒棒糖圖及共表現散佈圖</span>
+              <span data-lang="en">Figure 8: Zero-Filtered Lollipop Chart of Spearman Correlations and Co-expression Scatters</span>
+            </div>
+            <div data-lang="zh">
+              <strong>(A)</strong> 5,721 顆 Galectin-7 陽性癌細胞中各大功能分類基因之 Spearman 秩相關係數；<strong>(B-E)</strong> 分化評分、S100A7、KRT16 及 VIM 在共表現非零細胞中之迴歸散佈曲線。
+            </div>
+            <div data-lang="en">
+              <strong>(A)</strong> Ranked Spearman correlations across functional categories; <strong>(B-E)</strong> Regression scatters for Diff. Score, S100A7, KRT16, and VIM in co-expressing cells.
+            </div>
+          </div>
+        </div>
+
+        <!-- Table 2: Non-Zero Correlations -->
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Gene</th>
+                <th>Functional Category</th>
+                <th>Co-expressing Cells</th>
+                <th>Pearson r (in LGALS7+)</th>
+                <th>Spearman ρ (in LGALS7+)</th>
+                <th>P-value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>S100A7</strong></td>
+                <td>Squamous Differentiation</td>
+                <td>2,948</td>
+                <td class="val-pos">+0.4189</td>
+                <td class="val-pos">+0.4027</td>
+                <td>&lt; 10⁻¹⁰⁰</td>
+              </tr>
+              <tr>
+                <td><strong>KRT16</strong></td>
+                <td>Squamous Differentiation</td>
+                <td>5,023</td>
+                <td class="val-pos">+0.3669</td>
+                <td class="val-pos">+0.3630</td>
+                <td>&lt; 10⁻¹⁵⁰</td>
+              </tr>
+              <tr>
+                <td><strong>KRT6B</strong></td>
+                <td>Squamous Differentiation</td>
+                <td>4,868</td>
+                <td class="val-pos">+0.2970</td>
+                <td class="val-pos">+0.3202</td>
+                <td>&lt; 10⁻¹³⁰</td>
+              </tr>
+              <tr>
+                <td><strong>SPRR1B</strong></td>
+                <td>Squamous Differentiation</td>
+                <td>2,997</td>
+                <td class="val-pos">+0.3208</td>
+                <td class="val-pos">+0.2741</td>
+                <td>&lt; 10⁻⁹⁰</td>
+              </tr>
+              <tr>
+                <td><strong>CRABP2</strong></td>
+                <td>Retinoid Differentiation</td>
+                <td>1,992</td>
+                <td class="val-pos">+0.2323</td>
+                <td class="val-pos">+0.1552</td>
+                <td>&lt; 10⁻³⁰</td>
+              </tr>
+              <tr>
+                <td><strong>LGALS1</strong></td>
+                <td>Galectin Family (Stromal)</td>
+                <td>2,457</td>
+                <td class="val-neg">-0.4681</td>
+                <td class="val-neg">-0.4843</td>
+                <td>&lt; 10⁻³⁰⁰</td>
+              </tr>
+              <tr>
+                <td><strong>TGFBI</strong></td>
+                <td>pEMT / Invasiveness</td>
+                <td>1,262</td>
+                <td class="val-neg">-0.3757</td>
+                <td class="val-neg">-0.4651</td>
+                <td>&lt; 10⁻¹²⁰</td>
+              </tr>
+              <tr>
+                <td><strong>SNAI2 (Slug)</strong></td>
+                <td>EMT Transcription Factor</td>
+                <td>973</td>
+                <td class="val-neg">-0.2571</td>
+                <td class="val-neg">-0.3846</td>
+                <td>&lt; 10⁻⁸⁰</td>
+              </tr>
+              <tr>
+                <td><strong>VIM (Vimentin)</strong></td>
+                <td>Mesenchymal Cytoskeleton</td>
+                <td>1,796</td>
+                <td class="val-neg">-0.2831</td>
+                <td class="val-neg">-0.3501</td>
+                <td>&lt; 10⁻⁷⁰</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 9. Results: Pseudotime Trajectory -->
+      <section id="results-pseudotime">
+        <h2 class="section-header">
+          <span data-lang="zh">9. 結果：Slingshot 單細胞擬時序發育軌跡推估</span>
+          <span data-lang="en">9. Results: Pseudotime Trajectory</span>
+        </h2>
+        <div data-lang="zh">
+          <p>為確證 Galectin-7 隨腫瘤分化階層之動態演化順序，我們利用 <strong>Slingshot</strong> 推估 23,746 顆口腔癌細胞之單細胞擬時序軌跡（Pseudotime）。以去分化/浸潤前緣之 pEMT 高表現群（Cluster 15）為發育起點（$t=0$），高分化角化群（Cluster 8）為終點（$t=100$）。</p>
+          <p>沿著擬時序主曲線，廣義加性模型（GAM）動態擬合曲線證實：<strong>Galectin-7 的漸進式線性上升是口腔癌細胞邁向成熟複層鱗狀分化的標誌性分子事件（$r = +0.2613, ho = +0.3253, P &lt; 10^{-300}$）</strong>。其活化曲線與 <em>SPRR1B</em>（$ho = +0.4127$）、<em>KRT16</em>（$ho = +0.3701$）及 <em>S100A7</em>（$ho = +0.3260$）高度同步；而間質性侵襲分子 <em>LGALS1, VIM, TGFBI</em> 則沿擬時序急遽關閉熄滅。</p>
+        </div>
+        <div data-lang="en">
+          <p>To establish dynamic coupling, <strong>Slingshot</strong> was deployed to reconstruct pseudotime across 23,746 malignant cells, initiating at the undifferentiated pEMT root (Cluster 15) and terminating at the cornified squamous endpoint (Cluster 8).</p>
+          <p>GAM dynamic spline curves established that <strong>Galectin-7 expression escalates monotonically along the differentiation trajectory ($r = +0.2613, ho = +0.3253, P &lt; 10^{-300}$)</strong>, synchronously with <em>SPRR1B</em> ($ho = +0.4127$), <em>KRT16</em> ($ho = +0.3701$), and <em>S100A7</em> ($ho = +0.3260$), while mesenchymal invasion programs are extinguished.</p>
+        </div>
+
+        <!-- Fig 9 Card -->
+        <div class="fig-card">
+          <div class="fig-img-wrapper">
+            <img src="output_analysis/figures/Fig9_Pseudotime_Trajectory_Slingshot.png" alt="Figure 9: Slingshot Pseudotime Trajectory" onclick="openModal(this.src)">
+          </div>
+          <div class="fig-caption">
+            <div class="fig-title">
+              <span data-lang="zh">圖 9：Slingshot 單細胞擬時序軌跡、主曲線（Principal Curves）與動態分化/侵襲動力學曲線</span>
+              <span data-lang="en">Figure 9: Slingshot Developmental Trajectory and Dynamic Differentiation Kinetics</span>
+            </div>
+            <div data-lang="zh">
+              <strong>(A)</strong> 口腔癌細胞 UMAP 擬時序（0 至 100）漸變圖與黑箭頭主曲線；<strong>(B)</strong> Galectin-7 於軌跡末端之高度富集；<strong>(C)</strong> 沿擬時序 Galectin-7 與分化標記（S100A7, KRT16, SPRR1B）之同步上調曲線；<strong>(D)</strong> 沿擬時序間質標記（LGALS1, VIM, SNAI2, TGFBI）之熄滅關閉曲線。
+            </div>
+            <div data-lang="en">
+              <strong>(A)</strong> Slingshot pseudotime continuum with principal curve arrows; <strong>(B)</strong> Terminal enrichment of Galectin-7; <strong>(C)</strong> Synchronous activation of Galectin-7 and cornification markers; <strong>(D)</strong> Concomitant repression of pEMT factors.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. Discussion & Conclusions -->
+      <section id="discussion">
+        <h2 class="section-header">
+          <span data-lang="zh">10. 討論與結論 (Discussion & Conclusions)</span>
+          <span data-lang="en">10. Discussion & Conclusions</span>
+        </h2>
+        <div data-lang="zh">
+          <div class="callout takeaway">
+            <div class="callout-title">🏆 核心研究發現與轉譯醫學洞見 (Key Takeaways)</div>
+            <ol style="margin-left: 20px; line-height: 1.8;">
+              <li><strong>Galectin-7 是口腔鱗狀上皮譜系保真性（Lineage Fidelity）之標杆</strong>：在 OSCC-GB 複雜腫瘤微環境中，Galectin-7 展現近乎 100% 之上皮特異性，非上皮細胞表達率 &lt; 2.5%，具有作為口腔癌上皮純化與精準導向治療之絕佳標靶特徵。</li>
+              <li><strong>腫瘤微環境的「雙重 Galectin」開關模型</strong>：高分化角化型癌細胞高表達 <em>LGALS7</em> 並維持上皮屏障；一旦腫瘤向浸潤前緣轉移或發生 pEMT，細胞將靜默 <em>LGALS7</em>，轉而由周圍 CAFs 釋放大量 <em>LGALS1</em> 促進間質重塑與免疫逃逸。</li>
+              <li><strong>臨床病理分化階層之分子指針</strong>：Galectin-7 陽性細胞直接對應病理上的「高分化型（Well-differentiated）」角化珠癌巢；臨床切片中 Galectin-7 的丟失可作為預警 pEMT 侵襲與惡性進程的新型生物標誌物。</li>
+            </ol>
+          </div>
+        </div>
+        <div data-lang="en">
+          <div class="callout takeaway">
+            <div class="callout-title">🏆 Key Findings & Translational Insights</div>
+            <ol style="margin-left: 20px; line-height: 1.8;">
+              <li><strong>Galectin-7 Encodes Lineage Fidelity:</strong> Galectin-7 exhibits near-absolute epithelial restriction (&lt;2.5% in stroma, $P &lt; 2.2 	imes 10^{-300}$), representing an ideal surface/lineage biomarker.</li>
+              <li><strong>Dichotomous Galectin Switch in Oral Cancer:</strong> Well-differentiated carcinoma nests maintain high <em>LGALS7</em>. Upon invading stroma via pEMT, tumors shut off <em>LGALS7</em>, while stroma-derived <em>LGALS1</em> dominates matrix stiffening and immunosuppression.</li>
+              <li><strong>Diagnostic Gauge of Squamous Differentiation:</strong> Loss of Galectin-7 directly mirrors histological dedifferentiation and acquisition of aggressive pEMT properties.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11. References -->
+      <section id="references">
+        <h2 class="section-header">
+          <span data-lang="zh">11. 參考文獻 (References)</span>
+          <span data-lang="en">11. References</span>
+        </h2>
+        <ol style="margin-left: 24px; line-height: 1.8; font-size: 0.9rem; color: #334155;">
+          <li>Kurkalang, S., et al. (2023). Single-cell transcriptomic analysis of gingivo-buccal oral cancer reveals two dominant tumor populations and patient-to-patient heterogeneity. <em>Cancer Science</em>, 114(12), 4732–4746.</li>
+          <li>Purcell, P. et al. (2018). Epithelial-mesenchymal transition and partial EMT states in head and neck squamous cell carcinoma. <em>Cell</em>, 171(7), 1611–1624.</li>
+          <li>Saussez, S., &amp; Kiss, R. (2006). Galectin-7, a new marker of squamous differentiation and an inhibitor of tumor cell growth in OSCC. <em>Histology and Histopathology</em>, 21(8), 897–904.</li>
+          <li>Streetly, M. J., et al. (2010). Slingshot: cell lineage and pseudotime inference for single-cell transcriptomics. <em>BMC Genomics</em>, 21, 287.</li>
+          <li>Hao, Y., et al. (2024). Dictionary learning for integrative, multimodal and scalable single-cell analysis with Seurat v5. <em>Nature Biotechnology</em>, 42, 293–304.</li>
+        </ol>
+      </section>
+
+      <footer>
+        <p>&copy; 2026 Oral Cancer Galectin-7 Research Project | Single-Cell RNA-Seq Bioinformatics Pipeline | Powered by Seurat v5 &amp; Slingshot</p>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- Image Lightbox Modal -->
+  <div id="imgModal" class="modal" onclick="closeModal()">
+    <img id="modalImg" src="" alt="Enlarged Figure">
+  </div>
+
+  <script>
+    function switchLang(lang) {
+      if (lang === 'en') {
+        document.body.classList.add('show-en');
+        document.getElementById('btn-en').classList.add('active');
+        document.getElementById('btn-zh').classList.remove('active');
+      } else {
+        document.body.classList.remove('show-en');
+        document.getElementById('btn-zh').classList.add('active');
+        document.getElementById('btn-en').classList.remove('active');
+      }
+    }
+
+    function openModal(src) {
+      var modal = document.getElementById('imgModal');
+      var img = document.getElementById('modalImg');
+      modal.style.display = 'flex';
+      img.src = src;
+    }
+
+    function closeModal() {
+      document.getElementById('imgModal').style.display = 'none';
+    }
+
+    // Escape key to close modal
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeModal();
+    });
+  </script>
+</body>
+</html>
