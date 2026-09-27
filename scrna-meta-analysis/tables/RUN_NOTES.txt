@@ -1,0 +1,3 @@
+GSE181919: trajectory n=663 start_cluster=7 end_cluster=9
+GSE103322: trajectory n=1443 start_cluster=1 end_cluster=9
+GSE172577: trajectory n=3580 start_cluster=9 end_cluster=7

@@ -1,0 +1,73 @@
+Dataset: GSE181919
+Cells: 24156
+Expression scale: log1p of counts scaled to 10,000
+Reduction: pca
+LGALS7 definition of detected: counts slot > 0
+
+Cell-weighted LGALS7 by tissue and cell type:
+        tissue   cell_type pct_detected mean_expr n_cells
+   leukoplakia  Epithelial         63.9     0.915     183
+   leukoplakia  Fibroblast          0.4     0.004    1887
+   leukoplakia      T cell          0.4     0.004    1376
+   leukoplakia Endothelial          0.3     0.002    1563
+   leukoplakia    B/Plasma          0.2     0.001     931
+   leukoplakia  Macrophage          0.2     0.002     474
+   leukoplakia   Dendritic          0.0     0.000      95
+   leukoplakia        Mast          0.0     0.000      15
+   leukoplakia     Myocyte          0.0     0.000       3
+        normal  Epithelial          5.5     0.080     199
+        normal      T cell          0.1     0.001    1956
+        normal  Fibroblast          0.0     0.000    3757
+        normal Endothelial          0.0     0.000     613
+        normal    B/Plasma          0.0     0.000     426
+        normal  Macrophage          0.0     0.000     162
+        normal   Dendritic          0.0     0.000      21
+        normal        Mast          0.0     0.000       8
+        normal     Myocyte          0.0     0.000      90
+ primary_tumor   Malignant         53.3     0.593    1376
+ primary_tumor      T cell          1.7     0.011    2665
+ primary_tumor        Mast          1.4     0.020     140
+ primary_tumor    B/Plasma          1.2     0.003    1375
+ primary_tumor  Fibroblast          1.0     0.006    1621
+ primary_tumor  Macrophage          0.6     0.003    2214
+ primary_tumor   Dendritic          0.4     0.003     688
+ primary_tumor Endothelial          0.3     0.001     314
+ primary_tumor     Myocyte          0.0     0.000       4
+
+Sample-level tests use one value per sample, not one value per cell.
+Paired tests require at least 20 cells of each type in a sample and at least 3 samples.
+
+   dataset                                     comparison       metric n_a n_b
+ GSE181919          OSCC cancer cell vs Normal epithelial    mean_expr  10   3
+ GSE181919          OSCC cancer cell vs Normal epithelial pct_detected  10   3
+ GSE181919     OSCC cancer cell vs Leukoplakia epithelial    mean_expr  10   4
+ GSE181919     OSCC cancer cell vs Leukoplakia epithelial pct_detected  10   4
+ GSE181919      paired primary tumor: Malignant vs T cell    mean_expr  10  10
+ GSE181919      paired primary tumor: Malignant vs T cell pct_detected  10  10
+ GSE181919    paired primary tumor: Malignant vs B/Plasma    mean_expr   8   8
+ GSE181919    paired primary tumor: Malignant vs B/Plasma pct_detected   8   8
+ GSE181919  paired primary tumor: Malignant vs Fibroblast    mean_expr   8   8
+ GSE181919  paired primary tumor: Malignant vs Fibroblast pct_detected   8   8
+ GSE181919 paired primary tumor: Malignant vs Endothelial    mean_expr   5   5
+ GSE181919 paired primary tumor: Malignant vs Endothelial pct_detected   5   5
+ GSE181919  paired primary tumor: Malignant vs Macrophage    mean_expr   9   9
+ GSE181919  paired primary tumor: Malignant vs Macrophage pct_detected   9   9
+ GSE181919   paired primary tumor: Malignant vs Dendritic    mean_expr   6   6
+ GSE181919   paired primary tumor: Malignant vs Dendritic pct_detected   6   6
+   median_a     median_b     mean_a       mean_b     p_value
+  0.6933970 0.000000e+00  0.8342703  0.161166492 0.107834434
+ 70.1028623 0.000000e+00 65.5426656 11.111111111 0.022309459
+  0.6933970 1.053624e+00  0.8342703  1.004157655 0.620617946
+ 70.1028623 6.305556e+01 65.5426656 64.272875817 0.943628022
+  0.6933970 1.034696e-02  0.8342703  0.031702945 0.005921537
+ 70.1028623 1.104610e+00 65.5426656  5.768132058 0.005921537
+  0.8733620 5.189171e-04  0.8887038  0.004286867 0.014266187
+ 70.1028623 1.890359e-01 65.0742565  1.870889116 0.014266187
+  1.1593711 9.563210e-04  1.0170679  0.003633561 0.014266187
+ 78.3720930 1.141553e-01 74.1647248  0.681447291 0.014266187
+  1.3393361 0.000000e+00  1.0601729  0.001319664 0.059058229
+ 76.7441860 0.000000e+00 75.6970391  0.434782609 0.059058229
+  0.9794061 0.000000e+00  0.9219388  0.004281054 0.009151689
+ 76.7441860 0.000000e+00 70.7434770  0.771407648 0.009151689
+  0.8733620 0.000000e+00  0.9102951  0.003708244 0.036031686
+ 70.1028623 0.000000e+00 70.3097816  0.362318841 0.036031686

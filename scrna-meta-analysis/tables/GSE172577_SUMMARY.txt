@@ -1,0 +1,51 @@
+Dataset: GSE172577
+Cells: 57907
+Expression scale: log1p of counts scaled to 10,000
+Reduction: pca
+LGALS7 definition of detected: counts slot > 0
+
+Cell-weighted LGALS7 by tissue and cell type:
+        tissue   cell_type pct_detected mean_expr n_cells
+ primary_tumor  Epithelial         36.9     0.550   41187
+ primary_tumor Endothelial          8.7     0.091     842
+ primary_tumor      T cell          2.8     0.050    4516
+ primary_tumor     Myeloid          2.8     0.032    6169
+ primary_tumor  Fibroblast          2.3     0.024    1727
+ primary_tumor    B/Plasma          1.9     0.015    1692
+ primary_tumor        Mast          1.5     0.018     649
+ primary_tumor    Pericyte          1.2     0.014     667
+ primary_tumor  Unassigned          0.9     0.013     458
+
+Sample-level tests use one value per sample, not one value per cell.
+Paired tests require at least 20 cells of each type in a sample and at least 3 samples.
+
+   dataset                                      comparison       metric n_a n_b
+ GSE172577  paired primary tumor: Epithelial vs Fibroblast    mean_expr   6   6
+ GSE172577  paired primary tumor: Epithelial vs Fibroblast pct_detected   6   6
+ GSE172577      paired primary tumor: Epithelial vs T cell    mean_expr   6   6
+ GSE172577      paired primary tumor: Epithelial vs T cell pct_detected   6   6
+ GSE172577     paired primary tumor: Epithelial vs Myeloid    mean_expr   6   6
+ GSE172577     paired primary tumor: Epithelial vs Myeloid pct_detected   6   6
+ GSE172577        paired primary tumor: Epithelial vs Mast    mean_expr   4   4
+ GSE172577        paired primary tumor: Epithelial vs Mast pct_detected   4   4
+ GSE172577 paired primary tumor: Epithelial vs Endothelial    mean_expr   5   5
+ GSE172577 paired primary tumor: Epithelial vs Endothelial pct_detected   5   5
+ GSE172577    paired primary tumor: Epithelial vs Pericyte    mean_expr   5   5
+ GSE172577    paired primary tumor: Epithelial vs Pericyte pct_detected   5   5
+ GSE172577    paired primary tumor: Epithelial vs B/Plasma    mean_expr   3   3
+ GSE172577    paired primary tumor: Epithelial vs B/Plasma pct_detected   3   3
+   median_a    median_b     mean_a       mean_b    p_value
+  0.1958207 0.004670384  0.5334694  0.086263844 0.03603169
+ 27.5941108 0.917431193 36.1856027  8.121902352 0.03603169
+  0.1958207 0.012781061  0.5334694  0.122322568 0.03603169
+ 27.5941108 0.712491994 36.1856027  6.730404460 0.03603169
+  0.1958207 0.011528771  0.5334694  0.085761166 0.03603169
+ 27.5941108 1.254136503 36.1856027  7.325177965 0.03603169
+  0.1129283 0.003136721  0.1159131  0.004156839 0.10034825
+ 17.4818431 0.307692308 17.1596656  0.417004049 0.10034825
+  0.2338231 0.004795532  0.6265556  0.086650062 0.05905823
+ 32.7056897 0.692041522 40.9264924  8.384735048 0.05905823
+  0.2338231 0.010251892  0.6265556  0.033201100 0.05905823
+ 32.7056897 0.943396226 40.9264924  2.396471453 0.05905823
+  0.2338231 0.004890218  0.6873722  0.090907155 0.18144921
+ 32.7056897 0.257069409 43.7726879 11.835689803 0.18144921

@@ -1,0 +1,45 @@
+Dataset: GSE103322
+Cells: 5902
+Expression scale: log2(TPM/10+1)
+Reduction: pca
+LGALS7 definition of detected: counts slot > 0
+
+Cell-weighted LGALS7 by tissue and cell type:
+        tissue   cell_type pct_detected mean_expr n_cells
+    lymph_node   Malignant         62.6     2.514     788
+    lymph_node  Unassigned         25.9     1.234      27
+    lymph_node  Fibroblast          0.6     0.015     312
+    lymph_node Endothelial          0.0     0.000      63
+    lymph_node      T cell          0.0     0.000      88
+    lymph_node      B cell          0.0     0.000      66
+    lymph_node  Macrophage          0.0     0.000       6
+    lymph_node   Dendritic          0.0     0.000       4
+    lymph_node        Mast          0.0     0.000       7
+ primary_tumor   Malignant         78.2     3.982    1427
+ primary_tumor  Unassigned         27.9     1.409     297
+ primary_tumor   Dendritic          2.1     0.080      47
+ primary_tumor  Macrophage          1.1     0.020      92
+ primary_tumor  Fibroblast          0.5     0.016    1128
+ primary_tumor      T cell          0.3     0.008    1149
+ primary_tumor Endothelial          0.0     0.000     197
+ primary_tumor      B cell          0.0     0.000      72
+ primary_tumor        Mast          0.0     0.000     113
+ primary_tumor     Myocyte          0.0     0.000      19
+
+Sample-level tests use one value per sample, not one value per cell.
+Paired tests require at least 20 cells of each type in a sample and at least 3 samples.
+
+   dataset                                    comparison       metric n_a n_b
+ GSE103322            OSCC cancer cell vs LN cancer cell    mean_expr  12   8
+ GSE103322            OSCC cancer cell vs LN cancer cell pct_detected  12   8
+ GSE103322     paired primary tumor: Malignant vs T cell    mean_expr   6   6
+ GSE103322     paired primary tumor: Malignant vs T cell pct_detected   6   6
+ GSE103322 paired primary tumor: Malignant vs Fibroblast    mean_expr  11  11
+ GSE103322 paired primary tumor: Malignant vs Fibroblast pct_detected  11  11
+  median_a     median_b    mean_a      mean_b     p_value
+  3.877035  3.402412778  3.334584  3.19256073 1.000000000
+ 86.140725 83.968253968 72.825603 72.78276559 0.938479798
+  4.115574  0.005813852  4.626760  0.01701613 0.036031686
+ 88.571429  0.241545894 90.627212  0.61014960 0.036031686
+  3.881824  0.000000000  3.374372  0.02865753 0.003857293
+ 86.567164  0.000000000 72.819095  0.75028190 0.003857293
